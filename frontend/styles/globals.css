@@ -1,0 +1,48 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+h2, h3 {
+  text-align: center;
+}
+
+.content {
+  margin-top: 64px;
+}
+
+.cardgroup{
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  max-width: 1084px;
+  justify-content: center;
+}
+
+.card {
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 15px;
+}
+
+.recharts-pie-labels {
+  pointer-events: none;
+}

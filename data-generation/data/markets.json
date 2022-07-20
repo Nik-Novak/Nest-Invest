@@ -1,0 +1,42 @@
+[
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec2a",
+    "name": "Ecommerce",
+    "parent_id": "62d31f5f4fb7bb75ed69ec30"
+  },
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec2b",
+    "name": "Insurtech",
+    "parent_id": "62d31f5f4fb7bb75ed69ec31"
+  },
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec2c",
+    "name": "Enterprise",
+    "parent_id": null
+  },
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec2d",
+    "name": "Banking",
+    "parent_id": "62d31f5f4fb7bb75ed69ec31"
+  },
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec2e",
+    "name": "Social",
+    "parent_id": "62d31f5f4fb7bb75ed69ec30"
+  },
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec2f",
+    "name": "Banking as a Service",
+    "parent_id": "62d31f5f4fb7bb75ed69ec2d"
+  },
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec30",
+    "name": "Consumer",
+    "parent_id": null
+  },
+  {
+    "_id": "62d31f5f4fb7bb75ed69ec31",
+    "name": "Finance",
+    "parent_id": null
+  }
+]

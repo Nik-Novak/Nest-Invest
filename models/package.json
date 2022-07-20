@@ -1,0 +1,10 @@
+{
+  "name": "models",
+  "version": "1.0.0",
+  "description": "Models for franch-fry",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^6.4.0"
+  }
+}

@@ -1,0 +1,537 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: nest invest API
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: Nik
+    email: n.novak360@gmail.com
+  x-logo:
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
+    altText: Petstore logo
+  license:
+    name: Proprietary
+    url: 'https://google.com'
+tags:
+  - name: general
+    description: Any general non application-specific items, such as health checks, ready checks, docs, etc.
+  - name: authentication
+    description: Anything to do with authentication
+  - name: investors
+    description: Anything to do with investors 
+  - name: companies
+    description: Anything to do with companies
+  - name: markets
+    description: Anything to do with markets
+x-tagGroups:
+  - name: API Endpoints
+    tags:
+      - general
+      - authentication
+      - investors
+      - companies
+      - markets
+paths:
+  /docs:
+    get:
+      operationId: getDocs
+      summary: Gets the API Documentation
+      description: Get the browser renderable API docs for this API
+      tags:
+        - general
+      responses:
+        '200':
+          description: HTML API Document
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <html><head></head><body>Documentation</body></html>
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /healthz:
+    get:
+      operationId: checkHealth
+      summary: Check the health of this client
+      description: Returns information about the health of this client, or an error if unhealthy.
+      tags:
+        - general
+      parameters:
+        - name: lod
+          in: query
+          description: Level of detail (lod) of status report (integer from 0 to MAX_LOD). Omit to provide MAX_LOD report.
+          schema:
+            type: integer
+            minimum: 0
+            default: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheck"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheck"
+  /readyz:
+    get:
+      operationId: checkReady
+      summary: Check the readiness of this client
+      description: Returns information about the readiness state of this client, or an error if not ready.
+      tags:
+        - general
+      parameters:
+        - name: lod
+          in: query
+          description: Level of detail (lod) of status report (integer from 0 to MAX_LOD). Omit to provide MAX_LOD report.
+          schema:
+            type: integer
+            minimum: 0
+            default: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadyCheck"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadyCheck"
+  
+  /markets:
+    get:
+      operationId: getMarkets
+      summary: Get the available markets
+      description: Get available markets
+      tags:
+        - markets
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+  /market/{id}:
+    get:
+      operationId: getMarket
+      summary: Get a market by id
+      description: Get a market by id
+      tags:
+       - markets
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Market"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Operation Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /markets/roots:
+    get:
+      operationId: getMarketRoots
+      summary: Precompute Root tags
+      description: Queues a process that computes roots for all elements top-down breadth first, returns root tags after completion
+      tags:
+      - markets
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Operation Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /market/{id}/root:
+    get:
+      operationId: getMarketRoot
+      summary: Gets the root market tag
+      description: Gets the highest level market tag associated with a certain market
+      tags:
+      - markets
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Market"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Operation Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /market/{id}/path:
+    get:
+      operationId: getMarketPath
+      summary: Gets the market tag math to the root
+      description: Gets the full tree path to the market tag root
+      tags:
+      - markets
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Operation Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /companies:
+    get:
+      operationId: getCompanies
+      summary: Get all companies
+      description: Get all companies
+      tags:
+      - companies
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Company"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Operation Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  /investors:
+    get:
+      operationId: getInvestors
+      summary: Get all investors
+      description: Get all investors
+      tags:
+      - investors
+      responses:
+        '200':
+          description: All Investors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Investor'
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '409':
+          description: Resource Exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Operation Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /investor/{id}:
+    get:
+      operationId: getInvestor
+      summary: Get an investor by id
+      description: Get an investor by id
+      tags:
+      - investors
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: All Investors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Investor'
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '409':
+          description: Resource Exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Operation Failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  parameters:
+    TabID:
+      name: tabID
+      in: path
+      description: Identifier number of the tab in question. (number from 1..n where n is the number of tabs open on client)
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+
+  schemas:
+    Market:
+      type: object
+      required:
+      - _id
+      - name
+      properties:
+        _id:
+          type: object
+        name:
+          type: string
+        parent_id:
+          description: id of parent Market
+    Company:
+      type: object
+      required:
+      - name
+      - address
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        market_tag_id:
+          type: object
+          description: id of associated Market
+    Investor:
+      type: object
+      required:
+      - first_name
+      - last_name
+      - company_ids
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        company_ids:
+          type: array
+          items: 
+            type: object
+    Error:
+      type: object
+      required:
+        - code
+        - error
+        - message
+        - path
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code assigned based on the type of failure (different from status)
+          example: 23
+        error:
+          anyOf:
+          - type: string
+            description: Detailed message about the error
+            example: "Invalid response for status code 200: should have required property 'name'"
+          - type: object
+            description: Error object thrown
+            example: {code:23, message:"Invalid response for status code 200: should have required property 'name'"}
+          
+        message:
+          type: string
+          description: General message about the error
+          example: The response was not valid.
+        path:
+          type: string
+          description: What caused the error
+          example: "accountUsername"
+    HealthCheck:
+      type: object
+      properties:
+        api_version:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/Error'
+        java_version:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/Error'
+        client_lastmodified:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/Error'
+    ReadyCheck:
+      type: object
+      properties:
+        up_to_date:
+          anyOf:
+          - type: boolean
+          - $ref: '#/components/schemas/Error'
+        scripts_installed:
+          anyOf:
+          - type: boolean
+          - $ref: '#/components/schemas/Error'
+        clientresources_installed:
+          anyOf:
+          - type: boolean
+          - $ref: '#/components/schemas/Error'
+        apiserver_running:
+          anyOf:
+          - type: boolean
+          - $ref: '#/components/schemas/Error'
+    Status:
+      type: object
+      required:
+        - version
+        - running
+      properties:
+        version: 
+          type: string
+          description: version of this client
+          example: v1
+        running:
+          type: boolean
+          description: whether the gameclient is running or not
+          example: true
+  requestBodies:
+    Token:
+      description: Request body for transferring a JWT Token
+      required: true
+      content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - token
+              properties:
+                token:
+                  type: string
+  
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    petstore_auth:
+      description: |
+        Get access to data while protecting your account credentials.
+        OAuth2 is also a safer and more secure way to give you access.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://petstore.swagger.io/api/oauth/dialog'
+          scopes:
+            'write:pets': modify pets in your account
+            'read:pets': read your pets
+    api_key:
+      description: >
+        For this sample, you can use the api key `special-key` to test the
+        authorization filters.
+      type: apiKey
+      name: api_key
+      in: header
+  examples:
+    Order:
+      value:
+        quantity: 1,
+        shipDate: 2018-10-19T16:46:45Z,
+        status: placed,
+        complete: false
